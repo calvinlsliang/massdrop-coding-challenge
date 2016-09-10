@@ -7,10 +7,10 @@ var jobQueue = bullQueue('job', 6379, '127.0.0.1');
 
 jobQueue.process(function(job, done) {
   getHtml(job.data.url, function(htmlObject) {
-    if (!htmlObject.error && htmlObject.response.statusCode == 200) {
+    if (!htmlObject.err && htmlObject.response.statusCode == 200) {
       db.get().set(job.data.job_id, htmlObject.response.body);
     } else {
-      db.get().set(job.data.job_id, htmlObject.error.toString());
+      db.get().set(job.data.job_id, htmlObject.err.toString());
     }
     done();
   });
