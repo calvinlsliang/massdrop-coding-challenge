@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var jobController = require('./app/controllers/job');
+var jobController = require('./app/v1/controllers/job');
 
 var app = express();
 var db = require('./app/db/db')

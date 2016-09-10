@@ -1,11 +1,12 @@
 var queue = require('../queue');
 var db = require('../../../db/db');
 
-module.exports.show = function(req, res) {
+getJob = function(req, res) {
   var job_id = req.params.job_id;
-  db.get().exists(job_id, function(err, exists) {
+  var db_instance = db.get();
+  db_instance.exists(job_id, function(err, exists) {
     if (exists) {
-      db.get().get(req.params.job_id, function(err, html) {
+      db_instance.get(job_id, function(err, html) {
         if (typeof(html) != 'undefined' && html != null) {
           res.send({job_id, status: "completed", html});
         } else {
@@ -18,9 +19,14 @@ module.exports.show = function(req, res) {
   });
 }
 
-module.exports.create = function(req, res) {
+createJob = function(req, res) {
   queue.add(req.body.url, function(job_id) {
     res.send({job_id});
     res.status(201).end();
   });
+}
+
+module.exports = {
+  show: getJob,
+  create: createJob
 }
