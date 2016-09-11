@@ -12,9 +12,15 @@ var port = config.port || 3000;
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+// ex. GET /job/1
 app.get('/job/:job_id', jobController.show);
+
+// ex. POST /job
+// Body (in x-www-form-urlencoded format):
+// {url: "http://www.google.com"}
 app.post('/job', jobController.create);
 
+// initializes DB (redis) and Job Queue (bull)
 db.connect(config);
 jobQueue.connect(config);
 

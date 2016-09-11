@@ -1,5 +1,7 @@
 var redis = require('redis');
 
+// keep the name generic so we can swap out redis for something
+// else easily just by replacing connect()
 var db = null;
 
 module.exports.connect = function(config) {
