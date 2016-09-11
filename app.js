@@ -1,18 +1,23 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var jobController = require('./app/v1/controllers/job');
-
 var app = express();
-var db = require('./app/db/db')
-var port = process.env.PORT || 3000;
 
-app.use(bodyParser.urlencoded({extended: false})); // figure out why false
+var db = require('./db')
+var jobQueue = require('./db/job_queue');
+var config = require('./config');
+var jobController = require('./controllers/job');
+
+var port = config.port || 3000;
+
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.get('/job/status/:job_id', jobController.show);
+app.get('/job/:job_id', jobController.show);
 app.post('/job', jobController.create);
 
-db.connect();
+db.connect(config);
+jobQueue.connect(config);
+
 app.listen(port, function() {
   console.log("App listening on port %s.", port);
 });
