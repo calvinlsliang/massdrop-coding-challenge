@@ -2,18 +2,10 @@ var redis = require('redis');
 
 var db = null;
 
-function host(config) {
-  return config.redis.host || "127.0.0.1";
-}
-
-function port(config) {
-  return config.redis.port || 6379;
-}
-
 module.exports.connect = function(config) {
   db = redis.createClient({
-    "host": host(config),
-    "port": port(config)
+    "host": config.redis.host || "127.0.0.1",
+    "port": config.redis.port || 6379
   });
 
   db.on('connect', function() {
