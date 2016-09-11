@@ -24,7 +24,7 @@ node app.js
 ```
 
 ## API Endpoints
-### Check on job status and result
+### Check on job status and result (GET /job/:job_id)
 Example GET request
 ```
 curl http://localhost:3000/job/c4ca4238a0b923820dcc509a6f75849b
@@ -38,8 +38,11 @@ Example GET response
   "html": "foobar"
 }
 ```
+Job id is hashed to prevent attackers from viewing other jobs. Having a better hash or authentication would be good to have to make it difficult for attackers to gain access to other jobs.
 
-### Submit a url to the job queue to be fetched
+Status can be `completed`, `in queue`, or `not created` depending on state of the job.
+
+### Submit a url to the job queue to be fetched (POST /job)
 Example POST request
 ```
 curl -H "Content-Type: application/json" \
