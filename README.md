@@ -40,7 +40,7 @@ Example GET response
 ```
 Job id is hashed to prevent attackers from viewing other jobs. Having a better hash or authentication would be good to have to make it difficult for attackers to gain access to other jobs.
 
-Status can be `completed`, `in queue`, or `not created` depending on state of the job.
+Status can be `completed`, `in progress`, `not created`, `error` depending on state of the job.
 
 ### Submit a url to the job queue to be fetched (POST /job)
 Example POST request
