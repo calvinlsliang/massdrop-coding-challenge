@@ -9,17 +9,14 @@ module.exports.show = function(job_id, cb) {
     }
 
     if (exists) {
-      db.get().get(job_id, function(error, html) {
+      db.get().get(job_id, function(error, htmlResponse) {
         if (error) {
           cb(error);
         }
 
-        // if html is null then the job is still in queue
-        if (typeof(html) != 'undefined' && html != null) {
-          cb(null, {status: "completed", html});
-        } else {
-          cb(null, {status: "in queue", html});
-        }
+        var htmlJson = JSON.parse(htmlResponse);
+
+        cb(null, {status: htmlJson.status, html: htmlJson.html})
       });
     } else {
       cb(null, {status: "not created", html: null});

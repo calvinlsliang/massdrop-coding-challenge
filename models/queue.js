@@ -3,7 +3,6 @@ var db = require('../db');
 var jobQueue = require('../db/job_queue');
 
 var JOB_ID = 'job_id';
-var md5sum = crypto.createHash('md5');
 
 // grabs the latest job_id and increments it. hashes it with md5sum
 // so evil people will have a harder time figuring out other people's
@@ -16,7 +15,7 @@ getNextJobId = function(cb) {
         cb(err);
       }
 
-      cb(null, md5sum.update(job_id).digest('hex'));
+      cb(null, crypto.createHash('md5').update(job_id).digest('hex'));
     });
   });
 }
@@ -28,8 +27,9 @@ module.exports.add = function(url, cb) {
     }
 
     // adds the job_id and url to the job queue so it can be
-    // handled accordingly
-    jobQueue.get().add({job_id, url});
+    // handled accordingly and creates job in db with status "in progress"
+    jobQueue.add(job_id, url);
+
     cb(null, job_id);
   });
 }
